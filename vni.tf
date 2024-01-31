@@ -1,4 +1,4 @@
-# resource "ibm_is_virtual_network_interface" "vnic01-vsi03" {
+# resource "ibm_is_virtual_network_interface" "vnic-vsi" {
 #   allow_ip_spoofing = false 
 #   auto_delete = false
 #   enable_infrastructure_nat = true
@@ -15,3 +15,4 @@
 #     reserved_ip = ibm_is_subnet_reserved_ip.rip_vnic01_vsi03_03.reserved_ip
 #   }
 # }
+#

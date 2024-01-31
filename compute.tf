@@ -132,22 +132,11 @@ resource "ibm_is_instance" "f5_ve_instance" {
   resource_group = data.ibm_resource_group.group.id
   image          = local.image_id
   profile        = data.ibm_is_instance_profile.instance_profile.id
-  primary_network_interface {
-    name            = "management"
-    subnet          = data.ibm_is_subnet.f5_management_subnet.id
-    security_groups = [ibm_is_security_group.f5_open_sg.id]
-  }
-  dynamic "network_interfaces" {
-    for_each = local.secondary_subnets
-    content {
-      name              = format("data-1-%d", (network_interfaces.key + 1))
-      subnet            = network_interfaces.value
-      security_groups   = [ibm_is_security_group.f5_open_sg.id]
-      allow_ip_spoofing = true
+  primary_network_attachment {
+    name = "vsi-nic"
+      virtual_network_interface {
+        id = ibm_is_virtual_network_interface.vnic01-vsi01.id
     }
-  }
-  boot_volume {
-    encryption = var.encryption_key_crn == "" ? null : var.encryption_key_crn 
   }
   vpc        = data.ibm_is_subnet.f5_management_subnet.vpc
   zone       = data.ibm_is_subnet.f5_management_subnet.zone
@@ -179,9 +168,26 @@ resource "ibm_is_floating_ip" "f5_external_floating_ip" {
   target         = element(ibm_is_instance.f5_ve_instance.network_interfaces.*.id, local.vs_interface_index)
 }
 
-## Adiçoes do RAFAEL OLIVEIRA
 
-# resource "ibm_is_subnet_reserved_ip" "reserved_ip" {
-#  subnet = "02u7-e32f9b41-1f5f-4e22-b3f4-1fabf12d9340"
-#  name = "reserved_ip"
-# }
+###
+## Adiçoes do RAFAEL OLIVEIRA
+###
+
+
+resource "ibm_is_subnet_reserved_ip" "rip_vnic_vsi" {
+ subnet = "02u7-e32f9b41-1f5f-4e22-b3f4-1fabf12d9340"
+ name = "reserved_ip"
+}
+
+
+resource "ibm_is_virtual_network_interface" "rip_vnic_vsi" {
+  allow_ip_spoofing = false 
+  auto_delete = false
+  enable_infrastructure_nat = true
+  name = "vnic01-vsi"
+  subnet = "02u7-e32f9b41-1f5f-4e22-b3f4-1fabf12d9340"
+  security_groups = "r042-d29e8e21-0b7f-494c-ab99-7bd27c100398"
+  primary_ip {
+    reserved_ip = ibm_is_subnet_reserved_ip.rip_vnic_vsi.reserved_ip
+  }
+}
