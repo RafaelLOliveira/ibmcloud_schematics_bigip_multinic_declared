@@ -181,7 +181,7 @@ resource "ibm_is_floating_ip" "f5_external_floating_ip" {
 
 ## Adiçoes do RAFAEL OLIVEIRA
 
-resource "ibm_is_subnet_reserved_ip" "reserved_ip" {
- subnet = "02u7-e32f9b41-1f5f-4e22-b3f4-1fabf12d9340"
- name = "reserved_ip"
-}
+# resource "ibm_is_subnet_reserved_ip" "reserved_ip" {
+#  subnet = "02u7-e32f9b41-1f5f-4e22-b3f4-1fabf12d9340"
+#  name = "reserved_ip"
+# }
