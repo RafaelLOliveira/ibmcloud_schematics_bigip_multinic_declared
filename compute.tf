@@ -132,11 +132,11 @@ resource "ibm_is_instance" "f5_ve_instance" {
   resource_group = data.ibm_resource_group.group.id
   image          = local.image_id
   profile        = data.ibm_is_instance_profile.instance_profile.id
-  # primary_network_interface {
-  #   name            = "management"
-  #   subnet          = data.ibm_is_subnet.f5_management_subnet.id
-  #   security_groups = [ibm_is_security_group.f5_open_sg.id]
-  # }
+  primary_network_interface {
+    name            = "management"
+    subnet          = data.ibm_is_subnet.f5_management_subnet.id
+    security_groups = [ibm_is_security_group.f5_open_sg.id]
+  }
   # dynamic "network_interfaces" {
   #   for_each = local.secondary_subnets
   #   content {
