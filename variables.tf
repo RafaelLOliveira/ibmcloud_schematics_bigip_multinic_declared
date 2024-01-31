@@ -304,3 +304,11 @@ variable "encryption_key_crn" {
 #  sensitive   = true
   description = "The crn of the encryption key"
 } 
+
+
+
+## Adiçoes do RAFAEL OLIVEIRA
+variable "subnet-vni"{
+  type = string
+  default = "02u7-e32f9b41-1f5f-4e22-b3f4-1fabf12d9340"
+}
