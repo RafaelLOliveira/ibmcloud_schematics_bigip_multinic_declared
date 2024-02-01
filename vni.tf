@@ -15,4 +15,3 @@
 #     reserved_ip = ibm_is_subnet_reserved_ip.rip_vnic01_vsi03_03.reserved_ip
 #   }
 # }
-#

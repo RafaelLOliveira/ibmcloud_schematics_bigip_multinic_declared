@@ -132,10 +132,11 @@ resource "ibm_is_instance" "f5_ve_instance" {
   resource_group = data.ibm_resource_group.group.id
   image          = local.image_id
   profile        = data.ibm_is_instance_profile.instance_profile.id
+
   primary_network_attachment {
     name = "vsi-nic"
       virtual_network_interface {
-        id = ibm_is_virtual_network_interface.vnic01-vsi01.id
+        id = ibm_is_virtual_network_interface.rip_vnic_vsi.id
     }
   }
   vpc        = data.ibm_is_subnet.f5_management_subnet.vpc
@@ -174,11 +175,6 @@ resource "ibm_is_floating_ip" "f5_external_floating_ip" {
 ###
 
 
-resource "ibm_is_subnet_reserved_ip" "rip_vnic_vsi" {
- subnet = "02u7-e32f9b41-1f5f-4e22-b3f4-1fabf12d9340"
- name = "reserved_ip"
-}
-
 
 resource "ibm_is_virtual_network_interface" "rip_vnic_vsi" {
   allow_ip_spoofing = false 
@@ -186,8 +182,24 @@ resource "ibm_is_virtual_network_interface" "rip_vnic_vsi" {
   enable_infrastructure_nat = true
   name = "vnic01-vsi"
   subnet = "02u7-e32f9b41-1f5f-4e22-b3f4-1fabf12d9340"
-  security_groups = "r042-d29e8e21-0b7f-494c-ab99-7bd27c100398"
+  ##security_groups = "r042-d29e8e21-0b7f-494c-ab99-7bd27c100398"
   primary_ip {
     reserved_ip = ibm_is_subnet_reserved_ip.rip_vnic_vsi.reserved_ip
   }
 }
+
+
+# data "ibm_is_virtual_network_interface" "rip_vnic_vsi" {
+#   name = "vnic01-vsi"
+# }
+
+resource "ibm_is_subnet_reserved_ip" "rip_vnic_vsi" {
+ subnet = "02u7-e32f9b41-1f5f-4e22-b3f4-1fabf12d9340"
+ name = "reserved-ip"
+}
+
+# data "ibm_is_subnet_reserved_ip" "rip_vnic_vsi"{
+#   subnet = "02u7-e32f9b41-1f5f-4e22-b3f4-1fabf12d9340"
+#   #name = "reserved_ip"
+#   reserved_ip = "10.132.10.34"
+# }
