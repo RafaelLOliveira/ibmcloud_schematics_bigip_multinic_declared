@@ -1,3 +1,9 @@
+variable "ibmcloud_api_key" {
+  type      = string
+  sensitive = true
+}
+
+
 ##################################################################################
 # version - Terraform version required
 ##################################################################################
@@ -11,7 +17,7 @@ variable "TF_VERSION" {
 ##################################################################################
 variable "region" {
   type        = string
-  default     = "us-south"
+  default     = "br-sao"
   description = "The VPC region to instatiate the F5 BIG-IP instance"
 }
 
@@ -20,7 +26,7 @@ variable "region" {
 ##################################################################################
 variable "resource_group" {
   type        = string
-  default     = "Default"
+  default     = "RG-Rafael"
   description = "The IBM Cloud resource group to create the F5 BIG-IP instance"
 }
 
@@ -29,7 +35,7 @@ variable "resource_group" {
 ##################################################################################
 variable "instance_name" {
   type        = string
-  default     = "f5-ve-01"
+  default     = "f5-ve-01-rafa"
   description = "The VPC Instance name"
 }
 
@@ -38,7 +44,7 @@ variable "instance_name" {
 ##################################################################################
 variable "hostname" {
   type        = string
-  default     = "f5-ve-01"
+  default     = "f5-ve-01-rafa"
   description = "The F5 BIG-IP hostname"
 }
 
@@ -96,7 +102,7 @@ variable "instance_profile" {
 ##################################################################################
 variable "ssh_key_name" {
   type        = string
-  default     = ""
+  default     = "ssh-rafael"
   description = "The name of the public SSH key (VPC Gen 2 SSH Key) to be used when provisioning the F5 BIG-IP instance"
 }
 
@@ -104,9 +110,9 @@ variable "ssh_key_name" {
 # tmos_admin_password - The password for the built-in admin F5 BIG-IP user
 ##################################################################################
 variable "tmos_admin_password" {
-  type        = string
-  default     = ""
-#  sensitive   = true
+  type    = string
+  default = ""
+  #  sensitive   = true
   description = "admin account password for the F5 BIG-IP instance"
 }
 
@@ -114,8 +120,9 @@ variable "tmos_admin_password" {
 # management_subnet_id - The VPC subnet ID for the F5 BIG-IP management interface
 ##################################################################################
 variable "management_subnet_id" {
-  type        = string
-  default     = null
+  type = string
+  default= null
+  #default     = var.management_subnet_id_gitignore
   description = "Required VPC Gen2 subnet ID for the F5 BIG-IP management network"
 }
 
@@ -134,7 +141,7 @@ variable "bigip_management_floating_ip" {
 ##################################################################################
 variable "cluster_subnet_id" {
   type        = string
-  default     = ""
+  default     = null
   description = "Optional VPC Gen2 subnet ID for the F5 BIG-IP configsync activities"
 }
 
@@ -151,8 +158,9 @@ variable "internal_subnet_id" {
 # external_subnet_id - The VPC subnet ID for the F5 BIG-IP virtual service listeners
 ##################################################################################
 variable "external_subnet_id" {
-  type        = string
+  type = string
   default     = ""
+  #default     = var.external_subnet_id_gitignore
   description = "Required VPC Gen2 subnet ID for the F5 BIG-IP virtual service listeners"
 }
 
@@ -184,27 +192,27 @@ variable "license_type" {
   description = "How to license, may be 'none','byol','regkeypool','utilitypool'"
 }
 variable "byol_license_basekey" {
-  type        = string
-  default     = ""
-#  sensitive   = true
+  type    = string
+  default = ""
+  #  sensitive   = true
   description = "Bring your own license registration key for the F5 BIG-IP instance"
 }
 variable "license_host" {
-  type        = string
-  default     = ""
-#  sensitive   = true
+  type    = string
+  default = ""
+  #  sensitive   = true
   description = "BIGIQ IP or hostname to use for pool based licensing of the F5 BIG-IP instance"
 }
 variable "license_username" {
-  type        = string
-  default     = ""
-#  sensitive   = true
+  type    = string
+  default = ""
+  #  sensitive   = true
   description = "BIGIQ username to use for the pool based licensing of the F5 BIG-IP instance"
 }
 variable "license_password" {
-  type        = string
-  default     = ""
-#  sensitive   = true
+  type    = string
+  default = ""
+  #  sensitive   = true
   description = "BIGIQ password to use for the pool based licensing of the F5 BIG-IP instance"
 }
 variable "license_pool" {
@@ -299,16 +307,27 @@ variable "tgrefresh_url" {
 # encryption_key_crn - The crn of the encryption key for the boot volume
 ##################################################################################
 variable "encryption_key_crn" {
-  type        = string
-  default     = ""
-#  sensitive   = true
+  type    = string
+  default = ""
+  #  sensitive   = true
   description = "The crn of the encryption key"
-} 
+}
 
 
 
-## Adiçoes do RAFAEL OLIVEIRA
-variable "subnet-vni"{
-  type = string
-  default = "02u7-e32f9b41-1f5f-4e22-b3f4-1fabf12d9340"
+
+##################################
+### Adiçoes do RAFAEL OLIVEIRA ###
+##################################
+# variable "subnet-vni"{
+#   type = string
+#   default = "02u7-e32f9b41-1f5f-4e22-b3f4-1fabf12d9340"
+# }
+
+
+variable "security_group_id" {
+  type    = string
+  default= ""
+  #default = var.security_group_id_gitignore
+  description = "Security Group ID"
 }

@@ -6,3 +6,5 @@ terraform.tfstate.backup
 *.tfvars
 apikey.txt
 .vscode
+plan.out
+ids.tf

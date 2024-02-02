@@ -5,6 +5,14 @@ import json
 import urllib.request
 import difflib
 
+##################################
+### Adiçoes do RAFAEL OLIVEIRA ###
+##################################
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
+##################################
+
+
 ALLOWED_TMOS_TYPES = ['all', 'ltm']
 PUBLIC_REGIONS = [
     'us-south', 'us-east', 'eu-gb', 'eu-de', 'jp-tok', 'jp-osa', 'au-syd',

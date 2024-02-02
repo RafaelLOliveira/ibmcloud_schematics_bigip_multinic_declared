@@ -133,12 +133,21 @@ resource "ibm_is_instance" "f5_ve_instance" {
   image          = local.image_id
   profile        = data.ibm_is_instance_profile.instance_profile.id
 
+
+##############################################
+### Atachamento da VNI  -  Rafael Oliveira ###
+##############################################
+
   primary_network_attachment {
-    name = "vsi-nic"
+    name = "network-interface-01"
       virtual_network_interface {
         id = ibm_is_virtual_network_interface.rip_vnic_vsi.id
-    }
+        #id = data.ibm_is_virtual_network_interfaces.vni_list.virtual_network_interfaces.id[1]
+      }  
   }
+
+##############################################
+
   vpc        = data.ibm_is_subnet.f5_management_subnet.vpc
   zone       = data.ibm_is_subnet.f5_management_subnet.zone
   keys       = [data.ibm_is_ssh_key.ssh_pub_key.id]
@@ -149,6 +158,15 @@ resource "ibm_is_instance" "f5_ve_instance" {
     delete = "120m"
   }
 }
+
+##############################################
+### TESTE Multiplas VNIs - Rafael Oliveira ###
+##############################################
+
+#   data "ibm_is_virtual_network_interfaces" "vni_list" {
+#     virtual_network_interfaces = [rip_vnic_vsi,rip_vnic_vsi2]
+# }
+##############################################
 
 locals {
   vs_interface_index   = length(ibm_is_instance.f5_ve_instance.network_interfaces) - 1
@@ -170,36 +188,3 @@ resource "ibm_is_floating_ip" "f5_external_floating_ip" {
 }
 
 
-###
-## Adiçoes do RAFAEL OLIVEIRA
-###
-
-
-
-resource "ibm_is_virtual_network_interface" "rip_vnic_vsi" {
-  allow_ip_spoofing = false 
-  auto_delete = false
-  enable_infrastructure_nat = true
-  name = "vnic01-vsi"
-  subnet = "02u7-e32f9b41-1f5f-4e22-b3f4-1fabf12d9340"
-  ##security_groups = "r042-d29e8e21-0b7f-494c-ab99-7bd27c100398"
-  primary_ip {
-    reserved_ip = ibm_is_subnet_reserved_ip.rip_vnic_vsi.reserved_ip
-  }
-}
-
-
-# data "ibm_is_virtual_network_interface" "rip_vnic_vsi" {
-#   name = "vnic01-vsi"
-# }
-
-resource "ibm_is_subnet_reserved_ip" "rip_vnic_vsi" {
- subnet = "02u7-e32f9b41-1f5f-4e22-b3f4-1fabf12d9340"
- name = "reserved-ip"
-}
-
-# data "ibm_is_subnet_reserved_ip" "rip_vnic_vsi"{
-#   subnet = "02u7-e32f9b41-1f5f-4e22-b3f4-1fabf12d9340"
-#   #name = "reserved_ip"
-#   reserved_ip = "10.132.10.34"
-# }

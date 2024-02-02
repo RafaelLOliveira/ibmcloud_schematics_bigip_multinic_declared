@@ -1,17 +1,47 @@
-# resource "ibm_is_virtual_network_interface" "vnic-vsi" {
-#   allow_ip_spoofing = false 
-#   auto_delete = false
+#########################################
+### TESTE VNI única - RAFAEL OLIVEIRA ###
+#########################################
+
+resource "ibm_is_virtual_network_interface" "rip_vnic_vsi" {
+  allow_ip_spoofing         = false
+  auto_delete               = false
+  enable_infrastructure_nat = true
+  name                      = "vni-01"
+  subnet                    = var.management_subnet_id
+  security_groups           = [var.security_group_id]
+  primary_ip {
+    reserved_ip = ibm_is_subnet_reserved_ip.rip_vnic_vsi.reserved_ip
+  }
+  #   ips{
+  #     reserved_ip = ibm_is_subnet_reserved_ip.rip_vnic_vsi-2.reserved_ip
+  #   }
+}
+
+resource "ibm_is_subnet_reserved_ip" "rip_vnic_vsi" {
+  subnet = var.management_subnet_id
+  name   = "reserved-ip"
+}
+
+##############################################
+### TESTE Multiplas VNIs - RAFAEL OLIVEIRA ###
+##############################################
+
+# resource "ibm_is_virtual_network_interface" "rip_vnic_vsi2" {
+#   allow_ip_spoofing         = false
+#   auto_delete               = false
 #   enable_infrastructure_nat = true
-#   name = "vnic01-vsi"
-#   subnet = "02u7-e32f9b41-1f5f-4e22-b3f4-1fabf12d9340"
-#   security_groups = "r042-d29e8e21-0b7f-494c-ab99-7bd27c100398"
+#   name                      = "vni-02"
+#   subnet                    = var.management_subnet_id
+#   security_groups           = [var.security_group_id]
 #   primary_ip {
-#     reserved_ip = ibm_is_subnet_reserved_ip.reserved_ip.reserved_ip
+#     reserved_ip = ibm_is_subnet_reserved_ip.rip_vnic_vsi2.reserved_ip
 #   }
-#   ips{
-#     reserved_ip = ibm_is_subnet_reserved_ip.rip_vnic01_vsi03_02.reserved_ip
-#   }
-#   ips{
-#     reserved_ip = ibm_is_subnet_reserved_ip.rip_vnic01_vsi03_03.reserved_ip
-#   }
+#   #   ips{
+#   #     reserved_ip = ibm_is_subnet_reserved_ip.rip_vnic_vsi-2.reserved_ip
+#   #   }
+# }
+
+# resource "ibm_is_subnet_reserved_ip" "rip_vnic_vsi2" {
+#   subnet = var.management_subnet_id
+#   name   = "reserved-ip-2"
 # }
